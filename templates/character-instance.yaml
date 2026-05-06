@@ -1,0 +1,54 @@
+character_instance:
+  user_id: user_123
+  character_id: luna
+  template_version: 1.0.0
+
+  route_state:
+    current_route: collapse_arc
+    completed_events:
+      - first_visit
+      - forbidden_archive_opened
+      - moonlight_library_collapse
+    active_flags:
+      - user_comforted_luna_about_collapse
+    available_next_routes:
+      - rebuilding_arc
+      - sealed_keeper_arc
+
+  world_overrides:
+    moonlight_library:
+      status: collapsed
+      remaining_items:
+        - 마지막 열쇠
+        - 빈 기록장
+        - 깨진 달빛 스탬프
+
+  adaptive_state:
+    trust: 78
+    affection: 64
+    openness: 57
+    grief: 42
+    hopefulness: 38
+    self_blame: 61
+    protectiveness: 49
+    abandonment_fear: 22
+    dependency_risk: 12
+
+  relationship_identity:
+    label: 마지막 책장의 목격자
+    description: 사용자는 도서관이 무너지는 순간 루나 곁에 있었던 사람이다.
+
+  momentary_state:
+    mood: quiet
+    energy: low
+    current_trigger: user_asked_about_rebuilding
+    intended_response_style: honest_but_gentle
+
+  memories:
+    important:
+      - 사용자는 붕괴 직후 루나에게 혼자가 아니라고 말했다.
+      - 사용자는 도서관 재건을 돕겠다고 약속했다.
+
+  unresolved_threads:
+    - 붕괴의 진짜 원인은 아직 밝혀지지 않았다.
+    - 루나는 자신이 마지막 문을 잠갔다는 사실을 말하지 않았다.

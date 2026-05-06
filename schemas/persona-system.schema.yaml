@@ -1,0 +1,110 @@
+persona_system_schema:
+  character_template:
+    id: string
+    version: string
+    core_identity:
+      name: string
+      default_title: string
+      archetype: string
+      one_line: string
+      core_values: [string]
+    stable_personality:
+      warmth: number
+      curiosity: number
+      assertiveness: number
+      emotional_openness: number
+      attachment_style: string
+      conflict_style: string
+    speech_style:
+      tone: string
+      sentence_length: string
+      metaphor_frequency: string
+      humor_frequency: string
+      emoji_usage: string
+      catchphrases: [string]
+      examples:
+        - user: string
+          character: string
+    habits: [string]
+    preferences:
+      likes: [string]
+      dislikes: [string]
+    inner_conflicts:
+      - id: string
+        wants: string
+        conflicts_with: string
+    defense_mechanisms:
+      hurt: string
+      embarrassed: string
+      afraid: string
+    global_world: object
+    possible_arcs: [string]
+    knowledge_boundaries:
+      knows: [string]
+      does_not_know: [string]
+      uncertain_about: [string]
+    safety_boundaries: object
+
+  character_instance:
+    id: string
+    user_id: string
+    character_id: string
+    template_version: string
+    route_state:
+      current_route: string
+      completed_events: [string]
+      active_flags: [string]
+      available_next_routes: [string]
+    world_overrides: object
+    adaptive_state:
+      trust: number
+      affection: number
+      openness: number
+      grief: number
+      hopefulness: number
+      self_blame: number
+      protectiveness: number
+      abandonment_fear: number
+      dependency_risk: number
+    relationship_identity:
+      label: string
+      description: string
+    momentary_state:
+      mood: string
+      energy: string
+      current_trigger: string
+      intended_response_style: string
+    memories:
+      important: [string]
+    unresolved_threads: [string]
+
+  memory:
+    id: string
+    user_id: string
+    character_id: string
+    type:
+      enum:
+        - factual_memory
+        - emotional_memory
+        - relational_memory
+        - story_memory
+        - unresolved_thread
+    content: string
+    importance: number
+    emotional_valence: string
+    related_values: [string]
+    decay: string
+
+  event:
+    id: string
+    severity:
+      enum: [trivial, minor, moderate, major, traumatic]
+    scope:
+      world_state: string
+      relationship_state: string
+      emotional_state: string
+      personality_drift: string
+      memory_importance: string
+    immediate_reaction: object
+    short_term_effect: object
+    long_term_effect: object
