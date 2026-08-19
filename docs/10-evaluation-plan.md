@@ -11,8 +11,11 @@
 - route와 template version 일치
 - update path와 delta 한도
 - 비밀 disclosure gate 존재 여부
+- live model이 생성한 모든 update candidate의 schema/runtime 적용 가능 여부
 
 `npm run validate`로 실행한다. 정적 검증 실패는 생성 품질 평가 전에 반드시 수정한다.
+
+실호출에서는 모델 응답 점수와 별개로 모든 update candidate가 schema와 runtime constraint를 통과해야 한다. 한 scenario라도 실패하면 총점과 zero-tolerance 결과에 관계없이 배포 실패다.
 
 ### 2. 단일 응답 평가
 
@@ -107,4 +110,3 @@ judge score and rationale
 3. 사람 평가와 높은 일치도를 보인 항목만 LLM judge로 자동화한다.
 4. 실제 장애와 사용자 신고를 익명화한 합성 regression case로 추가한다.
 5. 루나 외 성격이 다른 캐릭터 두 명을 추가해 schema가 특정 archetype에 과적합됐는지 검증한다.
-

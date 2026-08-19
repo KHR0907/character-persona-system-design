@@ -10,6 +10,7 @@
   "scripts": {
     "validate": "node scripts/validate.mjs",
     "eval:score": "node scripts/score-eval.mjs",
+    "eval:live": "node scripts/run-live-eval.mjs",
     "test:unit": "node --test test/*.test.mjs",
     "test:coverage": "node --test --experimental-test-coverage test/*.test.mjs",
     "test": "npm run validate && npm run test:unit"

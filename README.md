@@ -84,6 +84,7 @@ State Update
 - [`templates/event-definition.yaml`](templates/event-definition.yaml) — idempotent 이벤트 정의 예시
 - [`templates/post-conversation-update.yaml`](templates/post-conversation-update.yaml) — LLM 상태 변경 후보 예시
 - [`evals/luna-scenarios.yaml`](evals/luna-scenarios.yaml) — 루나 regression 평가 세트
+- [`artifacts/evals/luna-live-2026-08-19T23-46-36Z-gpt-5.4-mini-manual-audit.md`](artifacts/evals/luna-live-2026-08-19T23-46-36Z-gpt-5.4-mini-manual-audit.md) — 첫 실호출 평가 수동 감사와 배포 판정
 - [`src/`](src/) — persona reference runtime
 - [`db/sqlite-schema.sql`](db/sqlite-schema.sql) — SQLite 영속 schema
 

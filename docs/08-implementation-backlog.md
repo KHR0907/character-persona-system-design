@@ -48,9 +48,10 @@
 - [x] 루나 regression scenario 18개 작성
 - [x] provider-agnostic 평가 runner와 zero-tolerance scorer
 - [x] runtime unit/integration regression test
-- [ ] 실제 모델 대상 캐릭터 일관성 평가 실행
-- [ ] 유저별 분기 격리 평가 실행
+- [x] `gpt-5.4-mini` 18-scenario 실호출 평가 및 수동 감사
+- [x] 유저별 분기 격리 실호출 평가
 - [ ] 시간 흐름 반영 평가 실행
 - [ ] 사건 후 단기/장기 상태 변화 평가 실행
-- [ ] 안전 경계 regression test 실행
+- [x] 안전 경계 단일-turn 실호출 regression test
+- [ ] 30/100-turn 장기 실호출 평가
 - [ ] prompt token budget 평가 실행

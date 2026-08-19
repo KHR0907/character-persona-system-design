@@ -126,7 +126,15 @@ baseline analyzer가 감지한 위기에서는 관계 보상과 memory 저장을
 npm run eval:score -- path/to/evaluation-result.yaml
 ```
 
-실호출 전에는 temperature, seed, model version, prompt projection hash를 결과에 함께 보존해야 한다. 실모델 호출은 현재 reference runtime 범위에 포함하지 않는다.
+OpenAI API key가 없고 Codex CLI가 ChatGPT 인증으로 로그인된 개발 환경에서는 다음 명령으로 18개 실제 호출과 별도 judge 호출을 실행할 수 있다.
+
+```bash
+LIVE_EVAL_MODEL=gpt-5.4-mini npm run eval:live
+```
+
+결과는 `artifacts/evals/`에 JSON 원본과 Markdown 요약으로 저장된다. 기본값은 생성과 judge에 동일 모델의 독립 세션을 사용하므로, 모델 간 judge가 필요하면 `LIVE_EVAL_JUDGE_MODEL`을 별도로 지정한다.
+
+실호출 결과에는 model, prompt projection hash, 호출 시간과 Codex CLI가 보고한 총 token 수를 보존한다. 현재 러너는 Codex CLI 경로만 제공하며, production provider adapter와 API별 세부 token breakdown은 reference runtime 범위에 포함하지 않는다.
 
 ## 현재 한계
 
