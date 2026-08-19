@@ -123,12 +123,19 @@ const beliefIds = template.behavior_policy.beliefs.map((item) => item.id);
 const conflictIds = template.behavior_policy.inner_conflicts.map((item) => item.id);
 const ruleIds = template.behavior_policy.response_rules.map((item) => item.id);
 const secretIds = template.behavior_policy.secrets.map((item) => item.id);
+const decayPaths = template.state_evolution.decay_rules.map((item) => item.path);
 check(unique(dialogueIds), "dialogue example IDs must be unique");
 check(unique(goalIds), "goal IDs must be unique");
 check(unique(beliefIds), "belief IDs must be unique");
 check(unique(conflictIds), "inner conflict IDs must be unique");
 check(unique(ruleIds), "response rule IDs must be unique");
 check(unique(secretIds), "secret IDs must be unique");
+check(unique(decayPaths), "time decay paths must be unique");
+for (const rule of template.state_evolution.decay_rules) {
+  check(rule.floor <= rule.ceiling, `time decay floor must not exceed ceiling: ${rule.path}`);
+  const [, field] = rule.path.split(".");
+  check(typeof instance.psychological_state[field] === "number", `time decay path must resolve to a numeric psychological state: ${rule.path}`);
+}
 
 const scenarioIds = evaluation.scenarios.map((scenario) => scenario.id);
 check(unique(scenarioIds), "evaluation scenario IDs must be unique");

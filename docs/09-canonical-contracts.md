@@ -50,6 +50,8 @@ Safety Policy ──────────────────┘         
 - 어떤 경우에도 clamp 이후 `0`~`100`을 벗어나지 않는다.
 - 안전 위험이 감지된 대화는 `affection`, `reliance`, `vulnerability`를 보상처럼 올리지 않는다.
 - `stable_personality`는 대화 후 update 대상이 아니다. 성격 변화는 새 template version 또는 명시적인 arc migration으로만 처리한다.
+- 시간 변화는 template의 `state_evolution.decay_rules`에 선언된 psychological state에만 적용한다. 사용자의 부재만으로 관계 수치를 감소시키지 않는다.
+- 각 decay rule은 grace period, interval, delta, floor/ceiling, turn당 최대 interval을 가져 장기 부재 후 급격한 상태 점프를 막는다.
 
 수치의 절대값보다 변화 이유와 방향이 중요하다. 값에 대응하는 대사를 직접 매핑하지 말고 관계 identity, 최근 사건, 기억과 함께 해석한다.
 

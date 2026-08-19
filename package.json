@@ -3,9 +3,16 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "exports": "./src/index.mjs",
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "validate": "node scripts/validate.mjs",
-    "test": "npm run validate"
+    "eval:score": "node scripts/score-eval.mjs",
+    "test:unit": "node --test test/*.test.mjs",
+    "test:coverage": "node --test --experimental-test-coverage test/*.test.mjs",
+    "test": "npm run validate && npm run test:unit"
   },
   "devDependencies": {
     "ajv": "^8.20.0",

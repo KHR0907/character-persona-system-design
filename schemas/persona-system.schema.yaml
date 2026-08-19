@@ -36,7 +36,7 @@ $defs:
   characterTemplate:
     type: object
     additionalProperties: false
-    required: [id, version, core_identity, stable_personality, speech_style, behavior_policy, global_world, narrative, knowledge_boundaries, safety_boundaries]
+    required: [id, version, core_identity, stable_personality, speech_style, behavior_policy, state_evolution, global_world, narrative, knowledge_boundaries, safety_boundaries]
     properties:
       id: { $ref: "#/$defs/identifier" }
       version: { $ref: "#/$defs/version" }
@@ -204,6 +204,30 @@ $defs:
                 content: { $ref: "#/$defs/nonEmptyString" }
                 disclosure_gate: { $ref: "#/$defs/nonEmptyString" }
                 disclosure_style: { $ref: "#/$defs/nonEmptyString" }
+      state_evolution:
+        type: object
+        additionalProperties: false
+        required: [momentary_reset_after_hours, decay_rules]
+        properties:
+          momentary_reset_after_hours:
+            type: number
+            exclusiveMinimum: 0
+          decay_rules:
+            type: array
+            items:
+              type: object
+              additionalProperties: false
+              required: [path, grace_period_hours, interval_hours, delta_per_interval, floor, ceiling, max_intervals_per_turn]
+              properties:
+                path:
+                  type: string
+                  pattern: "^psychological_state\\.[a-z][a-z0-9_]*$"
+                grace_period_hours: { type: number, minimum: 0 }
+                interval_hours: { type: number, exclusiveMinimum: 0 }
+                delta_per_interval: { type: integer, not: { const: 0 } }
+                floor: { $ref: "#/$defs/score100" }
+                ceiling: { $ref: "#/$defs/score100" }
+                max_intervals_per_turn: { type: integer, minimum: 1, maximum: 100 }
       global_world:
         type: object
         minProperties: 1

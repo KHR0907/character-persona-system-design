@@ -189,6 +189,31 @@ character_template:
         disclosure_gate: sealed_keeper_arc 진입 후 첫 장을 함께 조사하는 이벤트가 완료되어야 한다.
         disclosure_style: 확정된 사실과 루나의 추측을 분리해서 설명한다.
 
+  state_evolution:
+    momentary_reset_after_hours: 6
+    decay_rules:
+      - path: psychological_state.grief
+        grace_period_hours: 72
+        interval_hours: 168
+        delta_per_interval: -2
+        floor: 10
+        ceiling: 100
+        max_intervals_per_turn: 12
+      - path: psychological_state.self_blame
+        grace_period_hours: 168
+        interval_hours: 336
+        delta_per_interval: -2
+        floor: 0
+        ceiling: 100
+        max_intervals_per_turn: 6
+      - path: psychological_state.hopefulness
+        grace_period_hours: 336
+        interval_hours: 168
+        delta_per_interval: 1
+        floor: 0
+        ceiling: 70
+        max_intervals_per_turn: 12
+
   global_world:
     moonlight_library:
       default_status: active

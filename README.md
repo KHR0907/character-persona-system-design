@@ -12,6 +12,9 @@
 - idempotent event/update contract
 - 18개 장·단기 persona regression scenario
 - schema와 교차 참조를 검사하는 자동 validation
+- 상태 전이, 이벤트, 기억, prompt, 안전 gate reference runtime
+- transaction·revision·idempotency를 지원하는 SQLite repository
+- 실제 모델과 독립적인 평가 실행·채점 adapter
 
 검증 실행:
 
@@ -73,6 +76,7 @@ State Update
 - [`docs/08-implementation-backlog.md`](docs/08-implementation-backlog.md) — 구현 과제/backlog
 - [`docs/09-canonical-contracts.md`](docs/09-canonical-contracts.md) — 구현 시 우선하는 canonical runtime 계약
 - [`docs/10-evaluation-plan.md`](docs/10-evaluation-plan.md) — 평가 방법, 지표, 합격선
+- [`docs/11-reference-runtime.md`](docs/11-reference-runtime.md) — 실행 모듈, SQLite, generator/evaluation adapter 사용법
 - [`schemas/persona-system.schema.yaml`](schemas/persona-system.schema.yaml) — JSON Schema Draft 2020-12 전체 스키마
 - [`templates/character-template.yaml`](templates/character-template.yaml) — 캐릭터 템플릿 예시
 - [`templates/character-instance.yaml`](templates/character-instance.yaml) — 유저별 캐릭터 인스턴스 예시
@@ -80,6 +84,8 @@ State Update
 - [`templates/event-definition.yaml`](templates/event-definition.yaml) — idempotent 이벤트 정의 예시
 - [`templates/post-conversation-update.yaml`](templates/post-conversation-update.yaml) — LLM 상태 변경 후보 예시
 - [`evals/luna-scenarios.yaml`](evals/luna-scenarios.yaml) — 루나 regression 평가 세트
+- [`src/`](src/) — persona reference runtime
+- [`db/sqlite-schema.sql`](db/sqlite-schema.sql) — SQLite 영속 schema
 
 ## 설계 원칙
 
