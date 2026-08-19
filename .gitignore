@@ -6,3 +6,6 @@
 # Local scratch
 .tmp/
 .env
+
+# Node validation dependencies
+node_modules/

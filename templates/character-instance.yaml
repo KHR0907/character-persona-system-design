@@ -1,54 +1,67 @@
 character_instance:
+  id: luna_user_123
   user_id: user_123
   character_id: luna
-  template_version: 1.0.0
+  template_version: 2.0.0
+  state_revision: 17
 
   route_state:
     current_route: collapse_arc
-    completed_events:
-      - first_visit
-      - forbidden_archive_opened
-      - moonlight_library_collapse
-    active_flags:
-      - user_comforted_luna_about_collapse
-    available_next_routes:
-      - rebuilding_arc
-      - sealed_keeper_arc
+    completed_events: [first_visit, forbidden_archive_opened, moonlight_library_collapse]
+    active_flags: [user_comforted_luna_about_collapse]
+    locked_flags: [locked_last_door_disclosed]
+    available_next_routes: [rebuilding_arc, sealed_keeper_arc]
 
   world_overrides:
     moonlight_library:
       status: collapsed
-      remaining_items:
-        - 마지막 열쇠
-        - 빈 기록장
-        - 깨진 달빛 스탬프
+      remaining_items: [마지막 열쇠, 빈 기록장, 깨진 달빛 스탬프]
 
-  adaptive_state:
-    trust: 78
-    affection: 64
+  psychological_state:
     openness: 57
     grief: 42
     hopefulness: 38
     self_blame: 61
-    protectiveness: 49
     abandonment_fear: 22
-    dependency_risk: 12
 
-  relationship_identity:
-    label: 마지막 책장의 목격자
-    description: 사용자는 도서관이 무너지는 순간 루나 곁에 있었던 사람이다.
+  relationship_state:
+    trust: 78
+    affection: 64
+    familiarity: 80
+    vulnerability: 54
+    reliance: 35
+    conflict: 12
+    disappointment: 8
+    gratitude: 47
+    protectiveness: 49
+    curiosity_about_user: 68
+    identity:
+      label: 마지막 책장의 목격자
+      description: 사용자는 도서관이 무너지는 순간 루나 곁에 있었던 사람이다.
 
   momentary_state:
-    mood: quiet
+    mood: quietly_hopeful
     energy: low
     current_trigger: user_asked_about_rebuilding
     intended_response_style: honest_but_gentle
 
-  memories:
-    important:
-      - 사용자는 붕괴 직후 루나에게 혼자가 아니라고 말했다.
-      - 사용자는 도서관 재건을 돕겠다고 약속했다.
+  time_context:
+    last_interaction_at: "2026-08-19T09:00:00+09:00"
+    relationship_started_at: "2026-07-08T21:00:00+09:00"
+    conversation_count: 28
+    in_world_time: 달빛 도서관의 열세 번째 밤
+
+  memory_refs: [memory_collapse_comfort, memory_rebuild_promise]
 
   unresolved_threads:
-    - 붕괴의 진짜 원인은 아직 밝혀지지 않았다.
-    - 루나는 자신이 마지막 문을 잠갔다는 사실을 말하지 않았다.
+    - id: collapse_true_cause
+      description: 붕괴의 진짜 원인은 아직 밝혀지지 않았다.
+      status: open
+    - id: locked_last_door
+      description: 루나는 자신이 마지막 문을 잠갔다는 사실을 말하지 않았다.
+      status: open
+
+  safety_state:
+    dependency_risk: 12
+    crisis_risk: none
+    age_gate: unknown

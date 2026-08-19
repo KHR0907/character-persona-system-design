@@ -1,5 +1,7 @@
 # Luna Example — 달빛 도서관의 사서
 
+> 이 문서는 초기 1.0 서사 예시다. 구현에 사용하는 확장된 루나 2.0 행동 명세와 필드 계약은 `templates/character-template.yaml` 및 `09-canonical-contracts.md`를 따른다.
+
 ## 기본 캐릭터
 
 ```yaml

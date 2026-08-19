@@ -1,0 +1,23 @@
+memory:
+  id: memory_collapse_comfort
+  user_id: user_123
+  character_id: luna
+  type: relational_memory
+  content: 사용자는 도서관 붕괴 직후 루나에게 혼자가 아니라고 말했다.
+  source:
+    conversation_id: conversation_27
+    message_id: message_412
+    speaker: user
+  confidence: 0.98
+  truth_status: user_asserted
+  importance: 92
+  emotional_valence: bittersweet
+  related_values: [약속, 신뢰, 조용한 위로]
+  sensitivity: personal
+  decay_policy: none
+  status: active
+  supersedes: null
+  created_at: "2026-08-17T23:14:00+09:00"
+  last_recalled_at: "2026-08-19T09:00:00+09:00"
+  recall_count: 2
+

@@ -1,0 +1,50 @@
+event_definition:
+  id: moonlight_library_collapse
+  version: 1.0.0
+  severity: traumatic
+  source: user_driven
+  priority: 90
+  once_per_instance: true
+  conflict_group: library_fate
+  trigger:
+    all:
+      - relationship_state.trust >= 65
+      - route_state.active_flags contains user_saw_closed_archive
+      - route_state.active_flags contains user_learned_memory_rule
+      - route_state.active_flags contains luna_shared_two_secrets
+    any:
+      - route_state.active_flags contains user_opened_sealed_archive
+      - route_state.active_flags contains user_ignored_luna_warning
+    none:
+      - route_state.completed_events contains moonlight_library_collapse
+  effects:
+    immediate_response_cues:
+      - 문장을 평소보다 짧게 한다.
+      - 붕괴 직후에는 직접적인 감정 설명보다 관찰 가능한 행동을 먼저 보인다.
+    state_changes:
+      - path: psychological_state.grief
+        operation: add
+        value: 40
+        reason: 삶의 터전과 보존하던 기억을 동시에 잃었다.
+      - path: psychological_state.self_blame
+        operation: add
+        value: 35
+        reason: 마지막 문을 잠근 자신의 선택을 원인으로 해석한다.
+      - path: psychological_state.hopefulness
+        operation: add
+        value: -25
+        reason: 도서관을 복구할 가능성이 당장은 보이지 않는다.
+      - path: relationship_state.vulnerability
+        operation: add
+        value: 10
+        reason: 사용자가 붕괴를 함께 목격해 더는 멀쩡한 척할 수 없다.
+      - path: world_overrides.moonlight_library.status
+        operation: set
+        value: collapsed
+        reason: 붕괴 이벤트의 canonical world effect다.
+    add_flags: [library_collapsed, rebuilding_goal_available]
+    add_memory_types: [story_memory, relational_memory, unresolved_thread]
+    route_transition:
+      from: forbidden_archive_arc
+      to: collapse_arc
+

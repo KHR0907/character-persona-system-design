@@ -1,5 +1,7 @@
 # Data Model
 
+> 이 문서는 저장소/DB 설계의 개념 모델이다. 관계 상태를 별도 테이블로 정규화하더라도 도메인 소유권은 `character_instance.relationship_state`에만 있으며, canonical 필드 계약은 `09-canonical-contracts.md`와 JSON Schema를 따른다.
+
 ## 주요 테이블/컬렉션
 
 ### character_templates
@@ -26,13 +28,16 @@
 - `template_version`
 - `route_state`
 - `world_overrides`
-- `adaptive_state`
+- `psychological_state`
+- `relationship_state` (도메인 소유권; DB에서는 아래 테이블로 정규화 가능)
 - `relationship_identity`
 - `momentary_state`
 - `created_at`
 - `updated_at`
 
 ### relationship_states
+
+물리적으로 별도 저장할 수 있지만 `(user_id, character_id)`당 하나의 canonical relationship state만 존재하며 `psychological_state`에 관계 수치를 중복 저장하지 않는다.
 
 - `id`
 - `user_id`

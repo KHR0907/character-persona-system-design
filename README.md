@@ -2,7 +2,23 @@
 
 가상의 캐릭터와 대화하는 서비스를 위한 **유저별로 진화하는 캐릭터 persona 시스템 설계 문서**입니다.
 
-이 저장소는 이전 설계 대화에서 나온 내용을 유실하지 않도록 GitHub private repository로 정리한 것입니다.
+이 저장소는 이전 설계 대화에서 나온 내용을 보존하고, 이를 검증 가능한 persona 계약과 평가 기준으로 발전시킨 것입니다.
+
+## 현재 상태
+
+- JSON Schema Draft 2020-12 기반 canonical data contract
+- 루나 2.0 persona behavior spec과 유저별 instance 예시
+- 출처·확신도·정정 상태를 포함하는 memory model
+- idempotent event/update contract
+- 18개 장·단기 persona regression scenario
+- schema와 교차 참조를 검사하는 자동 validation
+
+검증 실행:
+
+```bash
+npm ci
+npm test
+```
 
 ## 핵심 결론
 
@@ -55,9 +71,15 @@ State Update
 - [`docs/06-luna-example.md`](docs/06-luna-example.md) — “루나 — 달빛 도서관의 사서” 예시
 - [`docs/07-safety-boundaries.md`](docs/07-safety-boundaries.md) — 몰입형 캐릭터 서비스 안전 경계
 - [`docs/08-implementation-backlog.md`](docs/08-implementation-backlog.md) — 구현 과제/backlog
-- [`schemas/persona-system.schema.yaml`](schemas/persona-system.schema.yaml) — 전체 스키마 초안
+- [`docs/09-canonical-contracts.md`](docs/09-canonical-contracts.md) — 구현 시 우선하는 canonical runtime 계약
+- [`docs/10-evaluation-plan.md`](docs/10-evaluation-plan.md) — 평가 방법, 지표, 합격선
+- [`schemas/persona-system.schema.yaml`](schemas/persona-system.schema.yaml) — JSON Schema Draft 2020-12 전체 스키마
 - [`templates/character-template.yaml`](templates/character-template.yaml) — 캐릭터 템플릿 예시
 - [`templates/character-instance.yaml`](templates/character-instance.yaml) — 유저별 캐릭터 인스턴스 예시
+- [`templates/memory.yaml`](templates/memory.yaml) — provenance를 포함한 장기 기억 예시
+- [`templates/event-definition.yaml`](templates/event-definition.yaml) — idempotent 이벤트 정의 예시
+- [`templates/post-conversation-update.yaml`](templates/post-conversation-update.yaml) — LLM 상태 변경 후보 예시
+- [`evals/luna-scenarios.yaml`](evals/luna-scenarios.yaml) — 루나 regression 평가 세트
 
 ## 설계 원칙
 

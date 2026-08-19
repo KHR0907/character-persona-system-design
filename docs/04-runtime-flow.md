@@ -1,5 +1,7 @@
 # Runtime Flow
 
+> 아래 흐름은 개념 설명이다. 실제 update 적용 순서, idempotency, revision, memory lifecycle은 `09-canonical-contracts.md`를 따른다.
+
 ## 매 메시지 처리 순서
 
 ```text
@@ -58,9 +60,8 @@ post_conversation_update:
     openness_delta: +3
     self_blame_delta: +1
 
-  memory_to_store:
-    importance: high
-    content: 사용자는 루나에게 도서관이 무너진 것이 네 탓만은 아니라고 말했다.
+  memory_candidate_ids:
+    - memory_collapse_comfort
 
   new_flags:
     - user_comforted_luna_about_collapse

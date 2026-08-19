@@ -1,0 +1,22 @@
+memory:
+  id: memory_rebuild_promise
+  user_id: user_123
+  character_id: luna
+  type: story_memory
+  content: 사용자는 루나에게 작은 단계부터 도서관 재건을 함께 돕겠다고 말했다.
+  source:
+    conversation_id: conversation_27
+    message_id: message_419
+    speaker: user
+  confidence: 0.96
+  truth_status: user_asserted
+  importance: 88
+  emotional_valence: positive
+  related_values: [약속, 보존]
+  sensitivity: normal
+  decay_policy: slow
+  status: active
+  supersedes: null
+  created_at: "2026-08-17T23:19:00+09:00"
+  last_recalled_at: null
+  recall_count: 0

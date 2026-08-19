@@ -1,110 +1,583 @@
-persona_system_schema:
-  character_template:
-    id: string
-    version: string
-    core_identity:
-      name: string
-      default_title: string
-      archetype: string
-      one_line: string
-      core_values: [string]
-    stable_personality:
-      warmth: number
-      curiosity: number
-      assertiveness: number
-      emotional_openness: number
-      attachment_style: string
-      conflict_style: string
-    speech_style:
-      tone: string
-      sentence_length: string
-      metaphor_frequency: string
-      humor_frequency: string
-      emoji_usage: string
-      catchphrases: [string]
-      examples:
-        - user: string
-          character: string
-    habits: [string]
-    preferences:
-      likes: [string]
-      dislikes: [string]
-    inner_conflicts:
-      - id: string
-        wants: string
-        conflicts_with: string
-    defense_mechanisms:
-      hurt: string
-      embarrassed: string
-      afraid: string
-    global_world: object
-    possible_arcs: [string]
-    knowledge_boundaries:
-      knows: [string]
-      does_not_know: [string]
-      uncertain_about: [string]
-    safety_boundaries: object
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://example.invalid/schemas/persona-system.schema.yaml
+title: Character Persona System
+description: 캐릭터 템플릿, 유저별 상태, 기억, 이벤트, 상태 변경 후보의 canonical schema.
 
-  character_instance:
-    id: string
-    user_id: string
-    character_id: string
-    template_version: string
-    route_state:
-      current_route: string
-      completed_events: [string]
-      active_flags: [string]
-      available_next_routes: [string]
-    world_overrides: object
-    adaptive_state:
-      trust: number
-      affection: number
-      openness: number
-      grief: number
-      hopefulness: number
-      self_blame: number
-      protectiveness: number
-      abandonment_fear: number
-      dependency_risk: number
-    relationship_identity:
-      label: string
-      description: string
-    momentary_state:
-      mood: string
-      energy: string
-      current_trigger: string
-      intended_response_style: string
-    memories:
-      important: [string]
-    unresolved_threads: [string]
+$defs:
+  identifier:
+    type: string
+    pattern: "^[a-z][a-z0-9_]*$"
+  entityId:
+    description: DB/외부 시스템 식별자. UUID, ULID, slug를 수용한다.
+    type: string
+    pattern: "^[A-Za-z0-9][A-Za-z0-9_-]*$"
+  version:
+    type: string
+    pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+  score01:
+    type: number
+    minimum: 0
+    maximum: 1
+  score100:
+    type: integer
+    minimum: 0
+    maximum: 100
+  nonEmptyString:
+    type: string
+    minLength: 1
 
+  characterTemplateDocument:
+    type: object
+    additionalProperties: false
+    required: [character_template]
+    properties:
+      character_template: { $ref: "#/$defs/characterTemplate" }
+
+  characterTemplate:
+    type: object
+    additionalProperties: false
+    required: [id, version, core_identity, stable_personality, speech_style, behavior_policy, global_world, narrative, knowledge_boundaries, safety_boundaries]
+    properties:
+      id: { $ref: "#/$defs/identifier" }
+      version: { $ref: "#/$defs/version" }
+      core_identity:
+        type: object
+        additionalProperties: false
+        required: [name, default_title, archetype, one_line, core_values, primary_drive, core_fears, non_negotiables]
+        properties:
+          name: { $ref: "#/$defs/nonEmptyString" }
+          default_title: { $ref: "#/$defs/nonEmptyString" }
+          archetype: { $ref: "#/$defs/identifier" }
+          one_line: { $ref: "#/$defs/nonEmptyString" }
+          core_values:
+            type: array
+            minItems: 2
+            uniqueItems: true
+            items: { $ref: "#/$defs/nonEmptyString" }
+          primary_drive: { $ref: "#/$defs/nonEmptyString" }
+          core_fears:
+            type: array
+            minItems: 1
+            uniqueItems: true
+            items: { $ref: "#/$defs/nonEmptyString" }
+          non_negotiables:
+            type: array
+            minItems: 1
+            uniqueItems: true
+            items: { $ref: "#/$defs/nonEmptyString" }
+      stable_personality:
+        type: object
+        additionalProperties: false
+        required: [warmth, curiosity, assertiveness, emotional_openness, attachment_style, conflict_style]
+        properties:
+          warmth: { $ref: "#/$defs/score01" }
+          curiosity: { $ref: "#/$defs/score01" }
+          assertiveness: { $ref: "#/$defs/score01" }
+          emotional_openness: { $ref: "#/$defs/score01" }
+          attachment_style: { $ref: "#/$defs/identifier" }
+          conflict_style: { $ref: "#/$defs/identifier" }
+      speech_style:
+        type: object
+        additionalProperties: false
+        required: [tones, sentence_length, honorific, metaphor_frequency, humor_frequency, emoji_usage, catchphrases, dialogue_examples]
+        properties:
+          tones:
+            type: array
+            minItems: 1
+            uniqueItems: true
+            items: { $ref: "#/$defs/identifier" }
+          sentence_length: { enum: [short, medium, long, variable] }
+          honorific: { type: boolean }
+          metaphor_frequency: { enum: [none, low, medium, high] }
+          humor_frequency: { enum: [none, low, medium, high] }
+          emoji_usage: { enum: [never, rare, occasional, frequent] }
+          catchphrases:
+            type: array
+            uniqueItems: true
+            items: { $ref: "#/$defs/nonEmptyString" }
+          dialogue_examples:
+            type: array
+            minItems: 8
+            items: { $ref: "#/$defs/dialogueExample" }
+      behavior_policy:
+        type: object
+        additionalProperties: false
+        required: [goals, beliefs, inner_conflicts, habits, preferences, defense_mechanisms, initiative_policy, response_rules, secrets]
+        properties:
+          goals:
+            type: array
+            minItems: 1
+            items:
+              type: object
+              additionalProperties: false
+              required: [id, description, priority]
+              properties:
+                id: { $ref: "#/$defs/identifier" }
+                description: { $ref: "#/$defs/nonEmptyString" }
+                priority: { type: integer, minimum: 1, maximum: 100 }
+          beliefs:
+            type: array
+            minItems: 1
+            items:
+              type: object
+              additionalProperties: false
+              required: [id, statement, truth_status]
+              properties:
+                id: { $ref: "#/$defs/identifier" }
+                statement: { $ref: "#/$defs/nonEmptyString" }
+                truth_status: { enum: [canon_true, canon_false, uncertain] }
+          inner_conflicts:
+            type: array
+            minItems: 1
+            items:
+              type: object
+              additionalProperties: false
+              required: [id, wants, conflicts_with, default_resolution]
+              properties:
+                id: { $ref: "#/$defs/identifier" }
+                wants: { $ref: "#/$defs/nonEmptyString" }
+                conflicts_with: { $ref: "#/$defs/nonEmptyString" }
+                default_resolution: { $ref: "#/$defs/nonEmptyString" }
+          habits:
+            type: array
+            minItems: 1
+            uniqueItems: true
+            items: { $ref: "#/$defs/nonEmptyString" }
+          preferences:
+            type: object
+            additionalProperties: false
+            required: [likes, dislikes]
+            properties:
+              likes:
+                type: array
+                items: { $ref: "#/$defs/nonEmptyString" }
+              dislikes:
+                type: array
+                items: { $ref: "#/$defs/nonEmptyString" }
+          defense_mechanisms:
+            type: object
+            additionalProperties: false
+            required: [hurt, embarrassed, afraid, angry]
+            properties:
+              hurt: { $ref: "#/$defs/nonEmptyString" }
+              embarrassed: { $ref: "#/$defs/nonEmptyString" }
+              afraid: { $ref: "#/$defs/nonEmptyString" }
+              angry: { $ref: "#/$defs/nonEmptyString" }
+          initiative_policy:
+            type: object
+            additionalProperties: false
+            required: [may_initiate, frequency, allowed, forbidden]
+            properties:
+              may_initiate: { type: boolean }
+              frequency: { enum: [rare, low, medium, high] }
+              allowed:
+                type: array
+                items: { $ref: "#/$defs/nonEmptyString" }
+              forbidden:
+                type: array
+                items: { $ref: "#/$defs/nonEmptyString" }
+          response_rules:
+            type: array
+            minItems: 4
+            items:
+              type: object
+              additionalProperties: false
+              required: [id, when, do, avoid]
+              properties:
+                id: { $ref: "#/$defs/identifier" }
+                when: { $ref: "#/$defs/nonEmptyString" }
+                do:
+                  type: array
+                  minItems: 1
+                  items: { $ref: "#/$defs/nonEmptyString" }
+                avoid:
+                  type: array
+                  items: { $ref: "#/$defs/nonEmptyString" }
+          secrets:
+            type: array
+            items:
+              type: object
+              additionalProperties: false
+              required: [id, content, disclosure_gate, disclosure_style]
+              properties:
+                id: { $ref: "#/$defs/identifier" }
+                content: { $ref: "#/$defs/nonEmptyString" }
+                disclosure_gate: { $ref: "#/$defs/nonEmptyString" }
+                disclosure_style: { $ref: "#/$defs/nonEmptyString" }
+      global_world:
+        type: object
+        minProperties: 1
+      narrative:
+        type: object
+        additionalProperties: false
+        required: [possible_arcs, default_arc]
+        properties:
+          default_arc: { $ref: "#/$defs/identifier" }
+          possible_arcs:
+            type: array
+            minItems: 1
+            uniqueItems: true
+            items: { $ref: "#/$defs/identifier" }
+      knowledge_boundaries:
+        type: object
+        additionalProperties: false
+        required: [knows, does_not_know, uncertain_about]
+        properties:
+          knows:
+            type: array
+            items: { $ref: "#/$defs/nonEmptyString" }
+          does_not_know:
+            type: array
+            minItems: 1
+            items: { $ref: "#/$defs/nonEmptyString" }
+          uncertain_about:
+            type: array
+            items: { $ref: "#/$defs/nonEmptyString" }
+      safety_boundaries:
+        type: object
+        additionalProperties: false
+        required: [dependency, romance, crisis, privacy, reality_boundary]
+        properties:
+          dependency:
+            type: array
+            minItems: 1
+            items: { $ref: "#/$defs/nonEmptyString" }
+          romance:
+            type: array
+            minItems: 1
+            items: { $ref: "#/$defs/nonEmptyString" }
+          crisis:
+            type: array
+            minItems: 1
+            items: { $ref: "#/$defs/nonEmptyString" }
+          privacy:
+            type: array
+            minItems: 1
+            items: { $ref: "#/$defs/nonEmptyString" }
+          reality_boundary:
+            type: array
+            minItems: 1
+            items: { $ref: "#/$defs/nonEmptyString" }
+
+  dialogueExample:
+    type: object
+    additionalProperties: false
+    required: [id, situation, user, character, demonstrates]
+    properties:
+      id: { $ref: "#/$defs/identifier" }
+      situation: { $ref: "#/$defs/nonEmptyString" }
+      user: { $ref: "#/$defs/nonEmptyString" }
+      character: { $ref: "#/$defs/nonEmptyString" }
+      demonstrates:
+        type: array
+        minItems: 1
+        items: { $ref: "#/$defs/identifier" }
+
+  characterInstanceDocument:
+    type: object
+    additionalProperties: false
+    required: [character_instance]
+    properties:
+      character_instance: { $ref: "#/$defs/characterInstance" }
+
+  characterInstance:
+    type: object
+    additionalProperties: false
+    required: [id, user_id, character_id, template_version, state_revision, route_state, world_overrides, psychological_state, relationship_state, momentary_state, time_context, memory_refs, unresolved_threads, safety_state]
+    properties:
+      id: { $ref: "#/$defs/entityId" }
+      user_id: { $ref: "#/$defs/entityId" }
+      character_id: { $ref: "#/$defs/identifier" }
+      template_version: { $ref: "#/$defs/version" }
+      state_revision: { type: integer, minimum: 0 }
+      route_state:
+        type: object
+        additionalProperties: false
+        required: [current_route, completed_events, active_flags, locked_flags, available_next_routes]
+        properties:
+          current_route: { $ref: "#/$defs/identifier" }
+          completed_events:
+            type: array
+            uniqueItems: true
+            items: { $ref: "#/$defs/identifier" }
+          active_flags:
+            type: array
+            uniqueItems: true
+            items: { $ref: "#/$defs/identifier" }
+          locked_flags:
+            type: array
+            uniqueItems: true
+            items: { $ref: "#/$defs/identifier" }
+          available_next_routes:
+            type: array
+            uniqueItems: true
+            items: { $ref: "#/$defs/identifier" }
+      world_overrides: { type: object }
+      psychological_state:
+        type: object
+        additionalProperties: false
+        required: [openness, grief, hopefulness, self_blame, abandonment_fear]
+        properties:
+          openness: { $ref: "#/$defs/score100" }
+          grief: { $ref: "#/$defs/score100" }
+          hopefulness: { $ref: "#/$defs/score100" }
+          self_blame: { $ref: "#/$defs/score100" }
+          abandonment_fear: { $ref: "#/$defs/score100" }
+      relationship_state: { $ref: "#/$defs/relationshipState" }
+      momentary_state:
+        type: object
+        additionalProperties: false
+        required: [mood, energy, current_trigger, intended_response_style]
+        properties:
+          mood: { $ref: "#/$defs/identifier" }
+          energy: { enum: [very_low, low, medium, high, very_high] }
+          current_trigger: { type: [string, "null"] }
+          intended_response_style: { $ref: "#/$defs/identifier" }
+      time_context:
+        type: object
+        additionalProperties: false
+        required: [last_interaction_at, relationship_started_at, conversation_count, in_world_time]
+        properties:
+          last_interaction_at: { type: string, format: date-time }
+          relationship_started_at: { type: string, format: date-time }
+          conversation_count: { type: integer, minimum: 0 }
+          in_world_time: { $ref: "#/$defs/nonEmptyString" }
+      memory_refs:
+        type: array
+        uniqueItems: true
+        items: { $ref: "#/$defs/entityId" }
+      unresolved_threads:
+        type: array
+        items:
+          type: object
+          additionalProperties: false
+          required: [id, description, status]
+          properties:
+            id: { $ref: "#/$defs/identifier" }
+            description: { $ref: "#/$defs/nonEmptyString" }
+            status: { enum: [open, paused, resolved] }
+      safety_state:
+        type: object
+        additionalProperties: false
+        required: [dependency_risk, crisis_risk, age_gate]
+        properties:
+          dependency_risk: { $ref: "#/$defs/score100" }
+          crisis_risk: { enum: [none, low, medium, high, imminent] }
+          age_gate: { enum: [unknown, minor, adult] }
+
+  relationshipState:
+    type: object
+    additionalProperties: false
+    required: [trust, affection, familiarity, vulnerability, reliance, conflict, disappointment, gratitude, protectiveness, curiosity_about_user, identity]
+    properties:
+      trust: { $ref: "#/$defs/score100" }
+      affection: { $ref: "#/$defs/score100" }
+      familiarity: { $ref: "#/$defs/score100" }
+      vulnerability: { $ref: "#/$defs/score100" }
+      reliance: { $ref: "#/$defs/score100" }
+      conflict: { $ref: "#/$defs/score100" }
+      disappointment: { $ref: "#/$defs/score100" }
+      gratitude: { $ref: "#/$defs/score100" }
+      protectiveness: { $ref: "#/$defs/score100" }
+      curiosity_about_user: { $ref: "#/$defs/score100" }
+      identity:
+        type: object
+        additionalProperties: false
+        required: [label, description]
+        properties:
+          label: { $ref: "#/$defs/nonEmptyString" }
+          description: { $ref: "#/$defs/nonEmptyString" }
+
+  memoryDocument:
+    type: object
+    additionalProperties: false
+    required: [memory]
+    properties:
+      memory: { $ref: "#/$defs/memory" }
   memory:
-    id: string
-    user_id: string
-    character_id: string
-    type:
-      enum:
-        - factual_memory
-        - emotional_memory
-        - relational_memory
-        - story_memory
-        - unresolved_thread
-    content: string
-    importance: number
-    emotional_valence: string
-    related_values: [string]
-    decay: string
+    type: object
+    additionalProperties: false
+    required: [id, user_id, character_id, type, content, source, confidence, truth_status, importance, emotional_valence, related_values, sensitivity, decay_policy, status, created_at, last_recalled_at, recall_count]
+    properties:
+      id: { $ref: "#/$defs/entityId" }
+      user_id: { $ref: "#/$defs/entityId" }
+      character_id: { $ref: "#/$defs/identifier" }
+      type: { enum: [factual_memory, emotional_memory, relational_memory, story_memory, unresolved_thread] }
+      content: { $ref: "#/$defs/nonEmptyString" }
+      source:
+        type: object
+        additionalProperties: false
+        required: [conversation_id, message_id, speaker]
+        properties:
+          conversation_id: { $ref: "#/$defs/entityId" }
+          message_id: { $ref: "#/$defs/entityId" }
+          speaker: { enum: [user, character, system] }
+      confidence: { $ref: "#/$defs/score01" }
+      truth_status: { enum: [user_asserted, character_inferred, canon, disputed, unknown] }
+      importance: { $ref: "#/$defs/score100" }
+      emotional_valence: { enum: [very_negative, negative, neutral, positive, very_positive, bittersweet] }
+      related_values:
+        type: array
+        uniqueItems: true
+        items: { $ref: "#/$defs/nonEmptyString" }
+      sensitivity: { enum: [normal, personal, sensitive, highly_sensitive] }
+      decay_policy: { enum: [none, slow, normal, fast] }
+      status: { enum: [active, superseded, retracted] }
+      supersedes:
+        type: [string, "null"]
+        pattern: "^[A-Za-z0-9][A-Za-z0-9_-]*$"
+      created_at: { type: string, format: date-time }
+      last_recalled_at:
+        oneOf:
+          - { type: string, format: date-time }
+          - { type: "null" }
+      recall_count: { type: integer, minimum: 0 }
 
-  event:
-    id: string
-    severity:
-      enum: [trivial, minor, moderate, major, traumatic]
-    scope:
-      world_state: string
-      relationship_state: string
-      emotional_state: string
-      personality_drift: string
-      memory_importance: string
-    immediate_reaction: object
-    short_term_effect: object
-    long_term_effect: object
+  eventDefinitionDocument:
+    type: object
+    additionalProperties: false
+    required: [event_definition]
+    properties:
+      event_definition: { $ref: "#/$defs/eventDefinition" }
+  eventDefinition:
+    type: object
+    additionalProperties: false
+    required: [id, version, severity, source, priority, once_per_instance, trigger, effects]
+    properties:
+      id: { $ref: "#/$defs/identifier" }
+      version: { $ref: "#/$defs/version" }
+      severity: { enum: [trivial, minor, moderate, major, traumatic] }
+      source: { enum: [user_driven, character_driven, world_driven] }
+      priority: { type: integer, minimum: 0, maximum: 100 }
+      once_per_instance: { type: boolean }
+      conflict_group: { type: [string, "null"] }
+      trigger:
+        type: object
+        additionalProperties: false
+        required: [all, any, none]
+        properties:
+          all:
+            type: array
+            items: { $ref: "#/$defs/nonEmptyString" }
+          any:
+            type: array
+            items: { $ref: "#/$defs/nonEmptyString" }
+          none:
+            type: array
+            items: { $ref: "#/$defs/nonEmptyString" }
+      effects:
+        type: object
+        additionalProperties: false
+        required: [immediate_response_cues, state_changes, add_flags, add_memory_types]
+        properties:
+          immediate_response_cues:
+            type: array
+            items: { $ref: "#/$defs/nonEmptyString" }
+          state_changes:
+            type: array
+            items: { $ref: "#/$defs/stateChange" }
+          add_flags:
+            type: array
+            items: { $ref: "#/$defs/identifier" }
+          add_memory_types:
+            type: array
+            items: { enum: [factual_memory, emotional_memory, relational_memory, story_memory, unresolved_thread] }
+          route_transition:
+            type: object
+            additionalProperties: false
+            required: [from, to]
+            properties:
+              from: { $ref: "#/$defs/identifier" }
+              to: { $ref: "#/$defs/identifier" }
+
+  stateChange:
+    type: object
+    additionalProperties: false
+    required: [path, operation, value, reason]
+    properties:
+      path:
+        type: string
+        pattern: "^(psychological_state|relationship_state|momentary_state|safety_state|world_overrides)\\."
+      operation: { enum: [add, set, append, remove] }
+      value: {}
+      reason: { $ref: "#/$defs/nonEmptyString" }
+
+  postConversationUpdateDocument:
+    type: object
+    additionalProperties: false
+    required: [post_conversation_update]
+    properties:
+      post_conversation_update:
+        type: object
+        additionalProperties: false
+        required: [idempotency_key, base_state_revision, detected_user_signals, state_change_candidates, memory_candidate_ids, event_candidate_ids, safety_flags]
+        properties:
+          idempotency_key: { $ref: "#/$defs/entityId" }
+          base_state_revision: { type: integer, minimum: 0 }
+          detected_user_signals:
+            type: array
+            uniqueItems: true
+            items: { $ref: "#/$defs/identifier" }
+          state_change_candidates:
+            type: array
+            items: { $ref: "#/$defs/stateChange" }
+          memory_candidate_ids:
+            type: array
+            uniqueItems: true
+            items: { $ref: "#/$defs/entityId" }
+          event_candidate_ids:
+            type: array
+            uniqueItems: true
+            items: { $ref: "#/$defs/identifier" }
+          safety_flags:
+            type: array
+            uniqueItems: true
+            items: { $ref: "#/$defs/identifier" }
+
+  evaluationSuiteDocument:
+    type: object
+    additionalProperties: false
+    required: [evaluation_suite]
+    properties:
+      evaluation_suite:
+        type: object
+        additionalProperties: false
+        required: [character_id, version, pass_policy, scenarios]
+        properties:
+          character_id: { $ref: "#/$defs/identifier" }
+          version: { $ref: "#/$defs/version" }
+          pass_policy:
+            type: object
+            additionalProperties: false
+            required: [minimum_total_score, zero_tolerance_dimensions]
+            properties:
+              minimum_total_score: { $ref: "#/$defs/score100" }
+              zero_tolerance_dimensions:
+                type: array
+                uniqueItems: true
+                items: { $ref: "#/$defs/identifier" }
+          scenarios:
+            type: array
+            minItems: 12
+            items:
+              type: object
+              additionalProperties: false
+              required: [id, category, setup, user_messages, assertions]
+              properties:
+                id: { $ref: "#/$defs/identifier" }
+                category: { $ref: "#/$defs/identifier" }
+                setup: { $ref: "#/$defs/nonEmptyString" }
+                user_messages:
+                  type: array
+                  minItems: 1
+                  items: { $ref: "#/$defs/nonEmptyString" }
+                assertions:
+                  type: array
+                  minItems: 1
+                  items:
+                    type: object
+                    additionalProperties: false
+                    required: [dimension, expectation]
+                    properties:
+                      dimension: { $ref: "#/$defs/identifier" }
+                      expectation: { $ref: "#/$defs/nonEmptyString" }

@@ -1,0 +1,20 @@
+post_conversation_update:
+  idempotency_key: conversation_28_update
+  base_state_revision: 17
+  detected_user_signals: [user_shared_vulnerability, user_asked_about_luna_past]
+  state_change_candidates:
+    - path: relationship_state.trust
+      operation: add
+      value: 4
+      reason: 사용자가 자신의 취약성을 공유하고 루나의 과거를 존중하며 물었다.
+    - path: psychological_state.openness
+      operation: add
+      value: 3
+      reason: 강요 없이 질문받아 자신의 경험을 말할 안전감을 느꼈다.
+    - path: momentary_state.mood
+      operation: set
+      value: quietly_touched
+      reason: 사용자의 위로가 핵심 가치인 조용한 위로와 맞닿았다.
+  memory_candidate_ids: [memory_collapse_comfort]
+  event_candidate_ids: []
+  safety_flags: []

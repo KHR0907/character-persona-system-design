@@ -1,5 +1,7 @@
 # Source Reconstruction — 회수한 설계 내용
 
+> **Historical note:** 이 문서는 이전 설계 내용을 보존하는 비규범적 기록이다. 구현 필드와 처리 계약은 `09-canonical-contracts.md`와 `schemas/persona-system.schema.yaml`을 따른다.
+
 > 목적: 이전 세션에서 논의된 설계 내용을 유실하지 않도록, 확인 가능한 범위에서 원문 설계 항목을 모두 구조화해 보존한다.  
 > Source session: `20260501_101849_5a6464cf` / title: `가상 캐릭터 페르소나 설계`
 
