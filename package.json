@@ -11,6 +11,7 @@
     "validate": "node scripts/validate.mjs",
     "eval:score": "node scripts/score-eval.mjs",
     "eval:live": "node scripts/run-live-eval.mjs",
+    "eval:abyss": "node scripts/run-abyss-chat-eval.mjs",
     "simulation:build": "node scripts/build-simulation.mjs",
     "test:unit": "node --test test/*.test.mjs",
     "test:coverage": "node --test --experimental-test-coverage test/*.test.mjs",
