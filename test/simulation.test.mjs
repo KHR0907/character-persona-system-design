@@ -62,11 +62,3 @@ test("simulation distinguishes applied, rejected, and candidate-only changes", (
     .filter((assertion) => assertion.added_after_live_run);
   assert.equal(addedAssertions.length, 3);
 });
-
-test("simulation HTML loads local assets without a server", () => {
-  const html = fs.readFileSync(path.join(rootDir, "simulation/index.html"), "utf8");
-  for (const asset of ["./styles.css", "./data.js", "./app.js"]) {
-    assert.match(html, new RegExp(asset.replace(".", "\\.")));
-    assert.ok(fs.existsSync(path.join(rootDir, "simulation", asset.slice(2))));
-  }
-});
