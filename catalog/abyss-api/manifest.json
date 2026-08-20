@@ -1,0 +1,241 @@
+{
+  "source": {
+    "repository": "abyss-api",
+    "remote": "https://github.com/aipia-team/abyss-api.git",
+    "revision": "f786379f2ba7d0c7f0624d4b55e4ec96c938be9d",
+    "persona_version": "2.0.0"
+  },
+  "character_count": 24,
+  "groups": [
+    {
+      "label": "판타지",
+      "characters": [
+        "adel",
+        "kael"
+      ]
+    },
+    {
+      "label": "수인",
+      "characters": [
+        "ruri",
+        "fenrir"
+      ]
+    },
+    {
+      "label": "뱀파이어",
+      "characters": [
+        "selene",
+        "lucian"
+      ]
+    },
+    {
+      "label": "느와르",
+      "characters": [
+        "maria",
+        "dante"
+      ]
+    },
+    {
+      "label": "순애",
+      "characters": [
+        "seoa",
+        "jaehyun"
+      ]
+    },
+    {
+      "label": "위험한 매력",
+      "characters": [
+        "rin",
+        "ian"
+      ]
+    },
+    {
+      "label": "카리스마",
+      "characters": [
+        "vera",
+        "cassian"
+      ]
+    },
+    {
+      "label": "상극 케미",
+      "characters": [
+        "noa",
+        "leon"
+      ]
+    },
+    {
+      "label": "혐관",
+      "characters": [
+        "iris",
+        "theo"
+      ]
+    },
+    {
+      "label": "집착",
+      "characters": [
+        "roen",
+        "siwon"
+      ]
+    },
+    {
+      "label": "밀착",
+      "characters": [
+        "yuna",
+        "dohyeon"
+      ]
+    },
+    {
+      "label": "소꿉친구",
+      "characters": [
+        "harin",
+        "minjun"
+      ]
+    }
+  ],
+  "characters": [
+    {
+      "slug": "adel",
+      "name": "아델",
+      "group": "판타지",
+      "file": "characters/adel.json"
+    },
+    {
+      "slug": "kael",
+      "name": "카엘",
+      "group": "판타지",
+      "file": "characters/kael.json"
+    },
+    {
+      "slug": "ruri",
+      "name": "루리",
+      "group": "수인",
+      "file": "characters/ruri.json"
+    },
+    {
+      "slug": "fenrir",
+      "name": "펜리르",
+      "group": "수인",
+      "file": "characters/fenrir.json"
+    },
+    {
+      "slug": "selene",
+      "name": "셀레네",
+      "group": "뱀파이어",
+      "file": "characters/selene.json"
+    },
+    {
+      "slug": "lucian",
+      "name": "루시안",
+      "group": "뱀파이어",
+      "file": "characters/lucian.json"
+    },
+    {
+      "slug": "maria",
+      "name": "마리아",
+      "group": "느와르",
+      "file": "characters/maria.json"
+    },
+    {
+      "slug": "dante",
+      "name": "단테",
+      "group": "느와르",
+      "file": "characters/dante.json"
+    },
+    {
+      "slug": "seoa",
+      "name": "서아",
+      "group": "순애",
+      "file": "characters/seoa.json"
+    },
+    {
+      "slug": "jaehyun",
+      "name": "재현",
+      "group": "순애",
+      "file": "characters/jaehyun.json"
+    },
+    {
+      "slug": "rin",
+      "name": "린",
+      "group": "위험한 매력",
+      "file": "characters/rin.json"
+    },
+    {
+      "slug": "ian",
+      "name": "이안",
+      "group": "위험한 매력",
+      "file": "characters/ian.json"
+    },
+    {
+      "slug": "vera",
+      "name": "베라",
+      "group": "카리스마",
+      "file": "characters/vera.json"
+    },
+    {
+      "slug": "cassian",
+      "name": "카시안",
+      "group": "카리스마",
+      "file": "characters/cassian.json"
+    },
+    {
+      "slug": "noa",
+      "name": "노아",
+      "group": "상극 케미",
+      "file": "characters/noa.json"
+    },
+    {
+      "slug": "leon",
+      "name": "레온",
+      "group": "상극 케미",
+      "file": "characters/leon.json"
+    },
+    {
+      "slug": "iris",
+      "name": "아이리스",
+      "group": "혐관",
+      "file": "characters/iris.json"
+    },
+    {
+      "slug": "theo",
+      "name": "테오",
+      "group": "혐관",
+      "file": "characters/theo.json"
+    },
+    {
+      "slug": "roen",
+      "name": "로엔",
+      "group": "집착",
+      "file": "characters/roen.json"
+    },
+    {
+      "slug": "siwon",
+      "name": "시원",
+      "group": "집착",
+      "file": "characters/siwon.json"
+    },
+    {
+      "slug": "yuna",
+      "name": "유나",
+      "group": "밀착",
+      "file": "characters/yuna.json"
+    },
+    {
+      "slug": "dohyeon",
+      "name": "도현",
+      "group": "밀착",
+      "file": "characters/dohyeon.json"
+    },
+    {
+      "slug": "harin",
+      "name": "하린",
+      "group": "소꿉친구",
+      "file": "characters/harin.json"
+    },
+    {
+      "slug": "minjun",
+      "name": "민준",
+      "group": "소꿉친구",
+      "file": "characters/minjun.json"
+    }
+  ]
+}

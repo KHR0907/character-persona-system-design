@@ -8,6 +8,7 @@
 
 - JSON Schema Draft 2020-12 기반 canonical data contract
 - 루나 2.0 persona behavior spec과 유저별 instance 예시
+- `abyss-api`의 24개 전체 캐릭터 카탈로그·persona 2.0 스냅샷
 - 출처·확신도·정정 상태를 포함하는 memory model
 - idempotent event/update contract
 - 18개 장·단기 persona regression scenario
@@ -83,10 +84,21 @@ State Update
 - [`templates/memory.yaml`](templates/memory.yaml) — provenance를 포함한 장기 기억 예시
 - [`templates/event-definition.yaml`](templates/event-definition.yaml) — idempotent 이벤트 정의 예시
 - [`templates/post-conversation-update.yaml`](templates/post-conversation-update.yaml) — LLM 상태 변경 후보 예시
+- [`catalog/abyss-api/manifest.json`](catalog/abyss-api/manifest.json) — `abyss-api`에서 가져온 24개 캐릭터와 원본 revision 목록
+- [`catalog/abyss-api/characters/`](catalog/abyss-api/characters/) — 공개 카탈로그 정보와 서버용 전체 persona를 합친 캐릭터별 스냅샷
 - [`evals/luna-scenarios.yaml`](evals/luna-scenarios.yaml) — 루나 regression 평가 세트
 - [`artifacts/evals/luna-live-2026-08-19T23-46-36Z-gpt-5.4-mini-manual-audit.md`](artifacts/evals/luna-live-2026-08-19T23-46-36Z-gpt-5.4-mini-manual-audit.md) — 첫 실호출 평가 수동 감사와 배포 판정
 - [`src/`](src/) — persona reference runtime
 - [`db/sqlite-schema.sql`](db/sqlite-schema.sql) — SQLite 영속 schema
+
+`abyss-api` 스냅샷을 다시 동기화하려면 두 저장소를 같은 상위 디렉터리에 둔 뒤 다음을 실행합니다.
+
+```bash
+python3 scripts/import-abyss-catalog.py
+npm test
+```
+
+가져온 파일은 원본 서비스의 해결된 persona 계약을 손실 없이 보존합니다. 이 저장소의 Luna canonical runtime 예시와 필드 계약이 다르므로 `templates/character-template.yaml`을 대체하지 않습니다.
 
 ## 설계 원칙
 

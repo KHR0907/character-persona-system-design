@@ -13,6 +13,10 @@ function readYaml(relativePath) {
   return YAML.parse(fs.readFileSync(path.join(rootDir, relativePath), "utf8"));
 }
 
+function readJson(relativePath) {
+  return JSON.parse(fs.readFileSync(path.join(rootDir, relativePath), "utf8"));
+}
+
 function listFiles(directory, predicate) {
   return fs.readdirSync(path.join(rootDir, directory))
     .filter(predicate)
@@ -55,6 +59,58 @@ function check(condition, message) {
 
 function unique(values) {
   return new Set(values).size === values.length;
+}
+
+const abyssManifestPath = "catalog/abyss-api/manifest.json";
+const abyssManifest = readJson(abyssManifestPath);
+const abyssCharacterFiles = listFiles(
+  "catalog/abyss-api/characters",
+  (name) => name.endsWith(".json"),
+);
+const abyssCharacters = abyssCharacterFiles.map((file) => ({ file, document: readJson(file) }));
+const abyssPersonaSections = [
+  "version",
+  "core_identity",
+  "stable_personality",
+  "speech_style",
+  "behavior_policy",
+  "global_world",
+  "narrative",
+  "knowledge_boundaries",
+  "safety_boundaries",
+];
+const abyssSlugs = abyssCharacters.map(({ document }) => document.character?.slug);
+const manifestSlugs = abyssManifest.characters?.map((entry) => entry.slug) ?? [];
+
+check(abyssManifest.character_count === abyssCharacters.length, "abyss catalog manifest count must match character files");
+check(abyssManifest.characters?.length === abyssCharacters.length, "abyss catalog manifest entries must match character files");
+check(unique(abyssSlugs), "abyss catalog character slugs must be unique");
+check(unique(manifestSlugs), "abyss catalog manifest slugs must be unique");
+check(
+  JSON.stringify([...abyssSlugs].sort()) === JSON.stringify([...manifestSlugs].sort()),
+  "abyss catalog manifest slugs must match character files",
+);
+
+for (const { file, document } of abyssCharacters) {
+  const { source, character, persona } = document;
+  const manifestIndex = abyssManifest.characters?.findIndex((entry) => entry.slug === character?.slug) ?? -1;
+  const manifestEntry = abyssManifest.characters?.[manifestIndex];
+  check(file.endsWith(`/${character?.slug}.json`), `${file} filename must match character slug`);
+  check(manifestEntry?.file === file.replace("catalog/abyss-api/", ""), `${file} path must match manifest`);
+  check(source?.repository === "abyss-api", `${file} source repository must be abyss-api`);
+  check(source?.revision === abyssManifest.source?.revision, `${file} source revision must match manifest`);
+  check(source?.persona_version === abyssManifest.source?.persona_version, `${file} persona version must match manifest`);
+  check(character?.sort_order === manifestIndex, `${file} sort_order must match manifest order`);
+  check(persona?.version === source?.persona_version, `${file} resolved persona version must match source`);
+  check(persona?.core_identity?.name === character?.name, `${file} persona name must match catalog name`);
+  check(
+    JSON.stringify(Object.keys(persona ?? {}).sort()) === JSON.stringify([...abyssPersonaSections].sort()),
+    `${file} must contain every resolved persona section`,
+  );
+  check((persona?.core_identity?.core_values?.length ?? 0) >= 3, `${file} must contain core values`);
+  check((persona?.speech_style?.dialogue_examples?.length ?? 0) >= 2, `${file} must contain dialogue examples`);
+  check((persona?.behavior_policy?.response_rules?.length ?? 0) >= 4, `${file} must contain response rules`);
+  check((persona?.narrative?.possible_arcs?.length ?? 0) >= 3, `${file} must contain narrative arcs`);
 }
 
 const template = parsed.get("templates/character-template.yaml").character_template;
@@ -148,4 +204,5 @@ if (errors.length > 0) {
 }
 
 console.log(`Validated ${documents.length} YAML documents against JSON Schema.`);
+console.log(`Validated ${abyssCharacters.length} imported abyss-api character personas against their snapshot manifest.`);
 console.log("Semantic checks passed: identity/version, routes, memory refs, revisions, delta constraints, and unique IDs.");
