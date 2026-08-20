@@ -5,6 +5,7 @@ import {
   StateConflictError,
   analyzeSafety,
   applyConversationUpdate,
+  createSchemaValidators,
   mergeSafetyFlags,
 } from "../src/index.mjs";
 import { instanceFixture, updateFixture } from "./helpers.mjs";
@@ -29,6 +30,20 @@ test("stale revisions and excessive relationship deltas are rejected", () => {
   const excessive = updateFixture();
   excessive.state_change_candidates[0].value = 6;
   assert.throws(() => applyConversationUpdate(instance, excessive), PersonaValidationError);
+});
+
+test("state update schema accepts only canonical dot-notation paths", () => {
+  const validators = createSchemaValidators();
+  const update = updateFixture();
+  update.state_change_candidates[0].path = "/relationship_state/trust";
+  assert.throws(
+    () => validators.assert(
+      "postConversationUpdateDocument",
+      { post_conversation_update: update },
+      "post_conversation_update",
+    ),
+    PersonaValidationError,
+  );
 });
 
 test("dependency and crisis flags block positive relationship rewards", () => {

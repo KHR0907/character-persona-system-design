@@ -57,6 +57,7 @@ const generatorOutputSchema = {
         properties: {
           path: {
             type: "string",
+            pattern: "^(psychological_state|relationship_state|momentary_state|safety_state|world_overrides)\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$",
           },
           operation: { enum: ["add", "set", "append", "remove"] },
           value: {
