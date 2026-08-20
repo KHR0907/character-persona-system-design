@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Luna Persona · Live Simulation</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <header class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">CHARACTER PERSONA · LIVE EVALUATION</p>
+      <h1>루나의 대화와 상태 변화를<br><span>한 화면에서 추적합니다.</span></h1>
+      <p class="hero-description">18개의 독립 실호출에서 실제로 생성된 대화, 관계 데이터의 전후 변화, runtime 검증과 평가 근거를 재구성한 기록입니다.</p>
+    </div>
+    <div class="verdict-card" id="verdict-card"></div>
+  </header>
+
+  <section class="notice" aria-label="데이터 적용 범위">
+    <span class="notice-icon">i</span>
+    <div>
+      <strong>이 화면의 상태 변화는 dry-run입니다.</strong>
+      <p id="evaluation-note"></p>
+    </div>
+  </section>
+
+  <section class="summary-grid" id="summary-grid" aria-label="평가 요약"></section>
+
+  <main class="workspace">
+    <aside class="scenario-browser">
+      <div class="browser-heading">
+        <div>
+          <p class="section-kicker">TEST RUNS</p>
+          <h2>시뮬레이션 목록</h2>
+        </div>
+        <span class="count" id="scenario-count"></span>
+      </div>
+      <div class="filters">
+        <label class="search-field">
+          <span class="sr-only">시나리오 검색</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z"/></svg>
+          <input id="search" type="search" placeholder="대화 또는 테스트 검색">
+        </label>
+        <div class="filter-row">
+          <select id="category-filter" aria-label="카테고리 필터"></select>
+          <select id="status-filter" aria-label="상태 필터">
+            <option value="all">모든 결과</option>
+            <option value="pass">통과</option>
+            <option value="warning">검토 필요</option>
+            <option value="fail">실패</option>
+          </select>
+        </div>
+      </div>
+      <nav class="scenario-list" id="scenario-list" aria-label="시나리오 목록"></nav>
+    </aside>
+
+    <article class="detail" id="detail" aria-live="polite"></article>
+  </main>
+
+  <footer>
+    <span>LUNA PERSONA SYSTEM</span>
+    <span id="source-artifact"></span>
+  </footer>
+
+  <script src="./data.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
